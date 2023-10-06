@@ -15,7 +15,7 @@ async function bootstrap() {
       options: {
         host: 'localhost',
         port: '3002',
-        package: 'hero',
+        package: 'user',
         protoPath: join(__dirname, '../src/proto/user.proto'),
         loaders: {
           enums: String,

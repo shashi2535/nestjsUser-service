@@ -1,13 +1,17 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
-import { HeroesService } from 'src/proto-types/user';
+import {
+  IUserService,
+  signupRequest,
+  signupResponse,
+} from 'src/proto-types/src/proto/user';
 import { UserService } from './user.service';
 
 @Controller()
-export class UserController implements HeroesService {
+export class UserController implements IUserService {
   constructor(private userService: UserService) {}
-  @GrpcMethod('HeroesService', 'FindOne')
-  async FindOne(data) {
-    return this.userService.getOneData(data);
+  @GrpcMethod('UserService', 'Signup')
+  async Signup(request: signupRequest): Promise<signupResponse> {
+    return this.userService.Signup(request);
   }
 }
