@@ -11,13 +11,18 @@ export class UserService {
   ) {}
   async Signup(request: UserCreateDto) {
     try {
+      console.log('singup function');
       const { email, name, password } = request;
-      // const userData = await this.userRepository.findOne({
-      //   where: { email: email },
-      // });
-      // if (userData) {
-      //   throw new HttpException('User Already Exist', 400);
-      // }
+      const userData = await this.userRepository.findOne({
+        where: { email: email },
+      });
+      if (userData) {
+        return {
+          statusCode: 400,
+          message: 'User Already Exist',
+          result: {},
+        };
+      }
       const data = this.userRepository.create({
         email,
         name,
@@ -30,12 +35,16 @@ export class UserService {
       });
       console.log('result', completeUser);
       const obj = {
-        name: result.name,
-        email: result.email,
-        userUuid: result.userUuid,
-        password: result.password,
-        createdAt: result?.createdAt?.toISOString(),
-        updatedAt: result?.updatedAt?.toISOString(),
+        statusCode: 200,
+        message: 'User Signup Successfully',
+        result: {
+          name: result.name,
+          email: result.email,
+          userUuid: result.userUuid,
+          password: result.password,
+          createdAt: result?.createdAt?.toISOString(),
+          updatedAt: result?.updatedAt?.toISOString(),
+        },
       };
       return obj;
     } catch (err) {
